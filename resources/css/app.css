@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Reusable UI pieces that auto-adapt to dark mode */
+@layer components {
+  /* Page section wrapper / card */
+  .card {
+    @apply rounded-2xl border bg-white p-5 shadow-sm
+           border-slate-200
+           dark:bg-slate-900 dark:border-slate-800;
+  }
+
+  /* Headline row with actions (title + button) */
+  .card-head {
+    @apply mb-4 flex items-center justify-between;
+  }
+
+  /* Buttons */
+  .btn { @apply inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition; }
+  .btn-primary {
+    @apply btn bg-indigo-600 text-white hover:bg-indigo-700
+           disabled:opacity-60 disabled:pointer-events-none;
+  }
+  .btn-muted {
+    @apply btn bg-slate-100 text-slate-700 hover:bg-slate-200
+           dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700;
+  }
+  .btn-danger {
+    @apply btn bg-rose-600 text-white hover:bg-rose-700;
+  }
+  .btn-link {
+    @apply text-indigo-600 hover:underline dark:text-indigo-400;
+  }
+
+  /* Data table */
+  .table {
+    @apply w-full text-sm text-slate-700 dark:text-slate-200;
+  }
+  .table thead th {
+    @apply text-left font-semibold uppercase tracking-wide text-xs
+           bg-slate-50 text-slate-600
+           dark:bg-slate-800 dark:text-slate-200;
+  }
+  .table th, .table td {
+    @apply px-4 py-3;
+  }
+  .table tbody tr {
+    @apply border-b border-slate-200 dark:border-slate-800;
+  }
+  .table tbody tr:hover {
+    @apply bg-slate-50/70 dark:bg-slate-800/60;
+  }
+
+  /* Pills / badges */
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+  }
+  .badge-amber { @apply badge bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-200; }
+  .badge-green { @apply badge bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-200; }
+}
