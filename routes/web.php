@@ -18,8 +18,11 @@ use App\Http\Controllers\User\ReviewController;
 use App\Http\Controllers\User\NotificationController;
 use App\Http\Controllers\User\AgentMapController;
 use App\Http\Controllers\User\RefundController;
-
-
+use App\Http\Controllers\Agent\AgentAuthController;
+use App\Http\Controllers\Agent\AgentDashboardController;
+use App\Http\Controllers\Agent\AgentWorkingHoursController;
+use App\Http\Controllers\Agent\AgentSettingsController;
+use App\Http\Controllers\Agent\AgentLocationController;
 
 Route::get('/', fn () => view('welcome'));
 
@@ -186,3 +189,73 @@ Route::middleware(['auth','verified'])->prefix('user')->name('user.')->group(fun
     Route::get('/agents-map', [AgentMapController::class, 'index'])->name('agents.map');
     Route::get('/agents.json', [AgentMapController::class, 'json'])->name('agents.json'); // optional
 });
+
+
+Route::prefix('agent')->group(function () {
+
+    Route::middleware('guest')->group(function () {
+        Route::get('/login', [AgentAuthController::class, 'showLoginForm'])->name('agent.login');
+        Route::post('/login', [AgentAuthController::class, 'login']);
+        Route::get('/register', [AgentAuthController::class, 'showRegisterForm'])->name('agent.register');
+        Route::post('/register', [AgentAuthController::class, 'register']);
+    });
+
+    Route::middleware(['auth', 'agent'])->group(function () {
+        Route::get('/dashboard', [AgentDashboardController::class, 'index'])->name('agent.dashboard');
+        Route::post('/logout', [AgentAuthController::class, 'logout'])->name('agent.logout');
+    });
+});
+ Route::get('/agent/transactions', [App\Http\Controllers\Agent\AgentTransactionController::class, 'index'])
+    ->name('agent.transactions')
+    ->middleware(['auth', 'agent']);
+
+Route::get('/agent/requests', [App\Http\Controllers\Agent\AgentRequestController::class, 'index'])
+    ->name('agent.requests')
+    ->middleware(['auth', 'agent']);
+
+Route::post('/agent/requests/{id}/approve', [App\Http\Controllers\Agent\AgentRequestController::class, 'approve'])
+    ->name('agent.requests.approve')
+    ->middleware(['auth', 'agent']);
+
+Route::post('/agent/requests/{id}/decline', [App\Http\Controllers\Agent\AgentRequestController::class, 'decline'])
+    ->name('agent.requests.decline')
+    ->middleware(['auth', 'agent']);
+
+    Route::get('/agent/payouts', [App\Http\Controllers\Agent\AgentPayoutController::class, 'index'])
+    ->name('agent.payouts')
+    ->middleware(['auth', 'agent']);
+
+Route::post('/agent/payouts/{id}/complete', [App\Http\Controllers\Agent\AgentPayoutController::class, 'complete'])
+    ->name('agent.payouts.complete')
+    ->middleware(['auth', 'agent']);
+
+ 
+
+Route::middleware(['auth', 'agent'])->group(function () {
+    Route::get('/agent/working-hours', [AgentWorkingHoursController::class, 'index'])
+        ->name('agent.workinghours');
+
+    Route::post('/agent/working-hours', [AgentWorkingHoursController::class, 'update'])
+        ->name('agent.workinghours.update');
+});
+
+Route::middleware(['auth', 'agent'])->group(function () {
+
+    Route::get('/agent/location', [AgentLocationController::class, 'index'])
+        ->name('agent.location');
+
+    Route::post('/agent/location', [AgentLocationController::class, 'update'])
+        ->name('agent.location.update');
+
+});
+
+// AGENT LOCATION PAGE
+Route::get('/agent/location', [AgentLocationController::class, 'index'])
+    ->name('agent.location');
+
+Route::post('/agent/location/update', [AgentLocationController::class, 'update'])
+    ->name('agent.location.update');
+
+    Route::get('/agent/settings', [AgentSettingsController::class, 'index'])->name('agent.settings');
+Route::post('/agent/settings/update', [AgentSettingsController::class, 'update'])->name('agent.settings.update');
+Route::post('/agent/settings/password', [AgentSettingsController::class, 'updatePassword'])->name('agent.settings.password');

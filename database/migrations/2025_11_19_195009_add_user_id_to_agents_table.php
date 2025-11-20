@@ -9,20 +9,20 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+  public function up()
 {
-    Schema::table('transfers', function (Blueprint $table) {
-        $table->unsignedBigInteger('service_id')->nullable()->after('beneficiary_id');
-        $table->foreign('service_id')->references('id')->on('transfer_services')->onDelete('set null');
+    Schema::table('agents', function (Blueprint $table) {
+        $table->unsignedBigInteger('user_id')->after('id')->nullable();
     });
 }
+
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::table('transfers', function (Blueprint $table) {
+        Schema::table('agents', function (Blueprint $table) {
             //
         });
     }

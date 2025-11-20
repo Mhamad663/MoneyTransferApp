@@ -7,9 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Agent extends Model
 {
-    protected $fillable = [
-        'name','address','city','country','phone','latitude','longitude','opening_hours','is_active'
-    ];
+   protected $fillable = [
+    'user_id',
+    'name',
+    'address',
+    'city',
+    'country',
+    'phone',
+    'latitude',
+    'longitude',
+    'opening_hours',
+    'is_active',
+];
 
     protected $casts = [
         'opening_hours' => 'array',

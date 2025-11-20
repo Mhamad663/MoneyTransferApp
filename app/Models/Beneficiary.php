@@ -18,5 +18,9 @@ class Beneficiary extends Model
     'is_favorite','status','notes',
   ];
 
-  public function user(){ return $this->belongsTo(User::class); }
+  public function user()
+{
+    return $this->belongsTo(User::class);
+}
+
 }

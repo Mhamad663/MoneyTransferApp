@@ -14,8 +14,16 @@ class Transfer extends Model {
     'src_currency','dst_currency','amount_src','amount_dst','fee','fx_rate',
     'status','reference'
   ];
-  public function user(){ return $this->belongsTo(User::class); }
-  public function beneficiary(){ return $this->belongsTo(Beneficiary::class); }
+public function user()
+{
+    return $this->belongsTo(User::class, 'user_id');
+}
+
+public function beneficiary()
+{
+    return $this->belongsTo(Beneficiary::class, 'beneficiary_id');
+}
+
   public function events(){ return $this->hasMany(TransferEvent::class); }
 
   public function service(){ return $this->belongsTo(\App\Models\TransferService::class,'service_id'); }
