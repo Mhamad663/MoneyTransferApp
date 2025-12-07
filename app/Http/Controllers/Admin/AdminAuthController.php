@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminAuthController extends Controller
 {
-    // --- LOGIN ---
+    //LOGIN
 
     public function showLoginForm()
     {
-        return view('admin.auth.login');   // resources/views/admin/auth/login.blade.php
+        return view('admin.auth.login');   
     }
 
     public function login(Request $request)
@@ -28,7 +28,7 @@ class AdminAuthController extends Controller
             return back()->withErrors(['email' => 'Invalid credentials']);
         }
 
-        if (Auth::user()->role !== 'admin') {     // only admins allowed here
+        if (Auth::user()->role !== 'admin') {     
             Auth::logout();
             return back()->withErrors(['email' => 'This is not an admin account']);
         }
@@ -36,11 +36,11 @@ class AdminAuthController extends Controller
         return redirect()->route('admin.dashboard');
     }
 
-    // --- REGISTRATION (ADMIN ONLY) ---
+    //REGISTRATION (ADMIN ONLY)
 
     public function showRegisterForm()
     {
-        return view('admin.auth.register');  // resources/views/admin/auth/register.blade.php
+        return view('admin.auth.register');  
     }
 
     public function register(Request $request)
@@ -55,16 +55,16 @@ class AdminAuthController extends Controller
             'name'     => $request->name,
             'email'    => $request->email,
             'password' => Hash::make($request->password),
-            'role'     => 'admin',   // 👈 VERY IMPORTANT
+            'role'     => 'admin',   
         ]);
 
-        // auto-login new admin or just redirect
+        
         Auth::login($user);
 
         return redirect()->route('admin.dashboard');
     }
 
-    // --- LOGOUT ---
+    // LOGOUT
 
     public function logout()
     {

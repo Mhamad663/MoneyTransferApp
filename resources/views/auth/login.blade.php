@@ -1,11 +1,11 @@
-{{-- resources/views/auth/login.blade.php --}}
+
 @extends('layouts.public')
 
 @section('content')
 <div class="min-h-screen flex items-center justify-center px-4 py-10">
     <div class="mx-auto w-full max-w-5xl grid gap-10 md:grid-cols-2">
 
-        {{-- LEFT SIDE — text / highlights --}}
+        
         <div class="fade-in space-y-4 px-2">
             <div class="inline-flex items-center gap-2 rounded-full bg-sky-500/10 px-3 py-1 text-xs text-sky-300">
                 <span class="h-1.5 w-1.5 rounded-full bg-sky-400"></span>

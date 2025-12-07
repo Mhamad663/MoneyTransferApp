@@ -36,11 +36,7 @@ use App\Http\Controllers\Admin\AdminServiceController;
 use App\Http\Controllers\Admin\AdminReportController;
 use App\Http\Controllers\Admin\AdminRefundController;
 use App\Http\Controllers\HomeController;
-/*
-|--------------------------------------------------------------------------
-| Public marketing pages
-|--------------------------------------------------------------------------
-*/
+
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::view('/how-it-works', 'public.how')->name('public.how');
@@ -53,18 +49,7 @@ Route::view('/about', 'public.about')->name('public.about');
 Route::view('/terms', 'public.terms')->name('public.terms');
 Route::view('/privacy', 'public.privacy')->name('public.privacy');
 
-/*
-|--------------------------------------------------------------------------
-| Generic authenticated dashboard (if you still want it)
-|--------------------------------------------------------------------------
-*/
 
-
-/*
-|--------------------------------------------------------------------------
-| User dashboard
-|--------------------------------------------------------------------------
-*/
 
 Route::middleware(['auth', 'verified'])
     ->prefix('user')
@@ -76,11 +61,7 @@ Route::middleware(['auth', 'verified'])
 
 
 
-/*
-|--------------------------------------------------------------------------
-| Reviews
-|--------------------------------------------------------------------------
-*/
+
 
 Route::middleware(['auth', 'verified'])
     ->prefix('user')
@@ -90,11 +71,7 @@ Route::middleware(['auth', 'verified'])
         Route::get('/reviews/my', [ReviewController::class, 'my'])->name('reviews.my');
     });
 
-/*
-|--------------------------------------------------------------------------
-| Profile (FULL CRUD)
-|--------------------------------------------------------------------------
-*/
+
 Route::middleware(['auth'])
     ->prefix('user')
     ->name('user.')
@@ -107,22 +84,14 @@ Route::middleware(['auth'])
 
 require __DIR__ . '/auth.php';
 
-/*
-|--------------------------------------------------------------------------
-| Social login
-|--------------------------------------------------------------------------
-*/
+
 
 Route::get('/auth/google', [SocialAuthController::class, 'redirectGoogle'])->name('google.redirect');
 Route::get('/auth/google/callback', [SocialAuthController::class, 'callbackGoogle']);
 Route::get('/auth/facebook', [SocialAuthController::class, 'redirectFacebook'])->name('facebook.redirect');
 Route::get('/auth/facebook/callback', [SocialAuthController::class, 'callbackFacebook']);
 
-/*
-|--------------------------------------------------------------------------
-| User wallet
-|--------------------------------------------------------------------------
-*/
+
 
 Route::middleware(['auth', 'verified'])
     ->prefix('user')
@@ -133,11 +102,7 @@ Route::middleware(['auth', 'verified'])
         Route::post('/wallet/transfer', [WalletController::class, 'transfer'])->name('wallet.transfer');
     });
 
-/*
-|--------------------------------------------------------------------------
-| Beneficiaries
-|--------------------------------------------------------------------------
-*/
+
 
 Route::middleware(['auth', 'verified'])
     ->prefix('user')
@@ -152,11 +117,7 @@ Route::middleware(['auth', 'verified'])
         Route::post('/beneficiaries/{beneficiary}/favorite', [BeneficiaryController::class, 'toggleFavorite'])->name('beneficiaries.favorite');
     });
 
-/*
-|--------------------------------------------------------------------------
-| Sending money (transfer create)
-|--------------------------------------------------------------------------
-*/
+
 
 Route::middleware(['auth', 'verified'])
     ->prefix('user')
@@ -168,11 +129,7 @@ Route::middleware(['auth', 'verified'])
         Route::post('/send/card', [TransferController::class, 'storeCard'])->name('send.card');
     });
 
-/*
-|--------------------------------------------------------------------------
-| Payment methods
-|--------------------------------------------------------------------------
-*/
+
 
 Route::middleware(['auth', 'verified'])
     ->prefix('user')
@@ -187,11 +144,7 @@ Route::middleware(['auth', 'verified'])
         Route::get('/payments/{paymentMethod}/details', [PaymentMethodController::class, 'details'])->name('payments.details');
     });
 
-/*
-|--------------------------------------------------------------------------
-| Transfer list / details for user
-|--------------------------------------------------------------------------
-*/
+
 
 Route::middleware(['auth', 'verified'])
     ->prefix('user')
@@ -201,11 +154,7 @@ Route::middleware(['auth', 'verified'])
         Route::get('/transfers/{id}', [TransferController::class, 'show'])->name('transfers.show');
     });
 
-/*
-|--------------------------------------------------------------------------
-| Stripe (user)
-|--------------------------------------------------------------------------
-*/
+
 
 Route::middleware(['auth', 'verified'])
     ->prefix('user/stripe')
@@ -216,11 +165,7 @@ Route::middleware(['auth', 'verified'])
         Route::post('/store-payment-method', [StripeController::class, 'storePaymentMethod'])->name('store-pm');
     });
 
-/*
-|--------------------------------------------------------------------------
-| Fees & promotions page (user)
-|--------------------------------------------------------------------------
-*/
+
 
 Route::middleware(['auth', 'verified'])
     ->prefix('user')
@@ -230,18 +175,14 @@ Route::middleware(['auth', 'verified'])
             ->name('fees-promotions');
     });
 
-/*
-|--------------------------------------------------------------------------
-| User transactions (clean, single definition)
-|--------------------------------------------------------------------------
-*/
+
 
 Route::middleware(['auth', 'verified'])
     ->prefix('user')
     ->name('user.')
     ->group(function () {
         Route::get('/transactions', [TransactionsController::class, 'index'])
-        ->name('transactions');   // use this in dashboard: route('user.transactions.index')
+        ->name('transactions');   
 
         Route::get('/transactions/export/pdf', [TransactionsController::class, 'exportListPdf'])
             ->name('transactions.export.pdf');
@@ -253,11 +194,7 @@ Route::middleware(['auth', 'verified'])
             ->name('transactions.pdf');
     });
 
-/*
-|--------------------------------------------------------------------------
-| Refund requests (user)
-|--------------------------------------------------------------------------
-*/
+
 
 Route::middleware(['auth', 'verified'])
     ->prefix('user')
@@ -268,11 +205,7 @@ Route::middleware(['auth', 'verified'])
         Route::post('/refunds/{transfer}', [RefundController::class, 'store'])->name('refunds.store');
     });
 
-/*
-|--------------------------------------------------------------------------
-| Live transfers page (user)
-|--------------------------------------------------------------------------
-*/
+
 
 Route::middleware(['auth', 'verified'])
     ->prefix('user')
@@ -282,11 +215,7 @@ Route::middleware(['auth', 'verified'])
         Route::get('/live-transfers/data', [TransferLiveController::class, 'data'])->name('transfers.live.data');
     });
 
-/*
-|--------------------------------------------------------------------------
-| Notifications (user)
-|--------------------------------------------------------------------------
-*/
+
 
 Route::prefix('user')->name('user.')->middleware(['auth'])->group(function () {
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
@@ -294,20 +223,12 @@ Route::prefix('user')->name('user.')->middleware(['auth'])->group(function () {
     Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.readAll');
 });
 
-/*
-|--------------------------------------------------------------------------
-| Rates endpoint used by dashboard
-|--------------------------------------------------------------------------
-*/
+
 
 Route::get('/exchange-rates', [DashboardController::class, 'getRates'])->name('exchange.rates');
 Route::get('/user/get-rates', [DashboardController::class, 'getRates'])->name('user.getRates');
 
-/*
-|--------------------------------------------------------------------------
-| Agents map (user side)
-|--------------------------------------------------------------------------
-*/
+
 
 Route::middleware(['auth', 'verified'])
     ->prefix('user')
@@ -317,11 +238,7 @@ Route::middleware(['auth', 'verified'])
         Route::get('/agents.json', [AgentMapController::class, 'json'])->name('agents.json');
     });
 
-/*
-|--------------------------------------------------------------------------
-| Agent auth & dashboard
-|--------------------------------------------------------------------------
-*/
+
 
 Route::prefix('agent')->group(function () {
 
@@ -338,11 +255,7 @@ Route::prefix('agent')->group(function () {
     });
 });
 
-/*
-|--------------------------------------------------------------------------
-| Agent transactions / requests / payouts
-|--------------------------------------------------------------------------
-*/
+
 
 Route::get('/agent/transactions', [App\Http\Controllers\Agent\AgentTransactionController::class, 'index'])
     ->name('agent.transactions')
@@ -386,11 +299,6 @@ Route::post('/agent/payouts/{id}/complete', [App\Http\Controllers\Agent\AgentPay
     ->name('agent.payouts.complete')
     ->middleware(['auth', 'agent']);
 
-/*
-|--------------------------------------------------------------------------
-| Agent working hours & location & settings
-|--------------------------------------------------------------------------
-*/
 
 Route::middleware(['auth', 'agent'])->group(function () {
 
@@ -409,11 +317,7 @@ Route::middleware(['auth', 'agent'])->group(function () {
     Route::post('/agent/settings/password', [AgentSettingsController::class, 'updatePassword'])->name('agent.settings.password');
 });
 
-/*
-|--------------------------------------------------------------------------
-| Admin auth (public)
-|--------------------------------------------------------------------------
-*/
+
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('login',    [AdminAuthController::class, 'showLoginForm'])->name('login');
@@ -423,11 +327,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('logout',  [AdminAuthController::class, 'logout'])->name('logout');
 });
 
-/*
-|--------------------------------------------------------------------------
-| Admin protected area
-|--------------------------------------------------------------------------
-*/
+
 
 Route::middleware(['auth', 'admin'])
     ->prefix('admin')

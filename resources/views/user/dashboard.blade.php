@@ -41,19 +41,13 @@
 
 
 
-{{-- =========================
-     MAIN GRID
-   ========================= --}}
+{{--
+     MAIN GRID--}}
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-  {{-- =========================
-       ANALYTICS (Chart)
-     ========================= --}}
-  {{-- =========================
-     LEFT SIDE: Chart + Live Status
-   ========================= --}}
+  
 <div class="lg:col-span-2 space-y-6">
 
-  {{-- ===== Send & Receive Chart ===== --}}
+  {{-- Send & Receive Chart --}}
   <div class="bg-white dark:bg-slate-900 rounded-2xl border dark:border-slate-800 p-6 overflow-hidden shadow-sm hover:shadow-md transition-all">
     <div class="flex items-center justify-between mb-4">
       <h2 class="font-semibold text-base sm:text-lg text-slate-800 dark:text-slate-100">
@@ -67,7 +61,7 @@
     </div>
   </div>
 
-  {{-- ===== Live Status (moved below chart) ===== --}}
+  {{-- Live Status (moved below chart) --}}
   <div class="bg-white dark:bg-slate-900 rounded-2xl border dark:border-slate-800 p-6 shadow-sm hover:shadow-md transition-all">
     <div class="flex items-center justify-between mb-3">
       <h2 class="font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2">
@@ -104,9 +98,9 @@
 </div>
 
 
-  {{-- =========================
+  {{--
        RIGHT SIDEBAR
-     ========================= --}}
+     --}}
   <div class="space-y-6">
     {{-- Notifications --}}
     <div class="rounded-2xl border bg-white dark:bg-slate-900 dark:border-slate-800 p-5">
@@ -143,9 +137,9 @@
       </ul>
     </div>
 
-    {{-- =========================
+    {{-- 
          EXCHANGE RATES (Refresh stays clickable)
-       ========================= --}}
+       --}} 
     <div class="rounded-2xl p-6 bg-gradient-to-br from-white via-slate-50 to-slate-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 border dark:border-slate-800 shadow-sm hover:shadow-md transition-all">
       <div class="flex items-center justify-between mb-4">
         <div class="flex items-center gap-3">
@@ -157,7 +151,7 @@
           <h2 class="font-semibold text-slate-800 dark:text-slate-100 text-lg">Exchange Rates</h2>
         </div>
 
-        {{-- NOTE: button remains enabled; we de-bounce in JS but never disable it --}}
+          
         <button id="refreshRates"
                 class="text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline focus:outline-none"
                 aria-live="polite" aria-label="Refresh exchange rates">
@@ -234,7 +228,7 @@
       @endforelse
     </div>--}}
 
-    {{-- Reviews & Rating (kept; average shown here, not in top cards) --}}
+    {{-- Reviews & Rating --}}
     <div class="bg-white dark:bg-slate-900 rounded-2xl border dark:border-slate-800 p-6">
   <div class="flex items-center justify-between flex-wrap gap-2">
     <h2 class="font-semibold">Rate Our Service</h2>
@@ -261,12 +255,13 @@
   </div>
 </div>
 
-{{-- =========================
+{{--
+
      SCRIPTS
-   ========================= --}}
+   --}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-  // -------- Dark/Light toggle (safe if the button isn't present)
+  //  Dark/Light toggle 
   (function() {
     const html   = document.documentElement;
     const toggle = document.getElementById('modeToggle');
@@ -292,7 +287,7 @@
     }
   })();
 
-  // -------- Chart.js (responsive height; compact)
+  // Chart.js 
   (function() {
     const labels  = @json($labels ?? []);
     const spend   = @json($spend ?? []);
@@ -328,7 +323,7 @@
       },
       options: {
         responsive: true,
-        maintainAspectRatio: false,   // uses parent div height
+        maintainAspectRatio: false,   
         layout: { padding: 8 },
         animation: { duration: 1100, easing: 'easeOutQuart' },
         plugins: {
@@ -351,7 +346,7 @@
     });
   })();
 
-  // -------- Stars rating UI
+  // Stars rating UI
   (function() {
   const form = document.getElementById('ratingForm');
   const scoreInput = document.getElementById('ratingScore');
@@ -388,7 +383,7 @@
       });
 
       if (!res.ok) throw new Error('Network error');
-      const html = await res.text(); // Accept Laravel’s normal response
+      const html = await res.text(); 
 
       // Reset form visually
       commentBox.value = '';
@@ -397,16 +392,16 @@
 
       // Show temporary success message
       msg.classList.remove('hidden');
-      msg.textContent = '✔️ Rating saved successfully!';
+      msg.textContent = ' Rating saved successfully!';
       setTimeout(() => msg.classList.add('hidden'), 3000);
 
     } catch (err) {
-      alert('⚠️ Failed to save rating. Please try again.');
+      alert(' Failed to save rating. Please try again.');
     }
   });
 })();
 
-  // -------- Exchange Rates (button never disabled; de-bounced; 8s timeout)
+  // Exchange Rates 
   (function() {
     const btn   = document.getElementById('refreshRates');
     const eurEl = document.getElementById('eurUsdRate');
@@ -429,7 +424,7 @@
     }
 
     async function fetchRates() {
-      if (inFlight) return;           // de-bounce but keep button clickable
+      if (inFlight) return;           
       inFlight = true;
 
       // soft spinner text; button remains clickable
@@ -483,9 +478,9 @@
   })();
 </script>
 
-{{-- =========================
+{{--
      SMALL RESPONSIVE TWEAKS
-   ========================= --}}
+   --}}
 <style>
   @media (max-width: 640px) {
     h2 { font-size: 1rem !important; }

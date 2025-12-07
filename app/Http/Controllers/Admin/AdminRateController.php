@@ -13,7 +13,7 @@ class AdminRateController extends Controller
         // All transfer services the platform supports
         $services = TransferService::orderBy('code')->get();
 
-        // later we can also pass exchange rate records
+        
         return view('admin.rates.index', compact('services'));
     }
 

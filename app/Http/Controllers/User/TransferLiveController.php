@@ -9,13 +9,13 @@ use Illuminate\Support\Facades\Auth;
 
 class TransferLiveController extends Controller
 {
-    /** Page */
+    /* Page */
     public function index()
     {
         return view('user.transfers.live');
     }
 
-    /** JSON for polling */
+    /* JSON for polling */
     public function data()
     {
         $rows = Transfer::with('service')

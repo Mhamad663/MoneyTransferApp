@@ -1,19 +1,19 @@
 <?php
 
-// app/Http/Controllers/User/TransactionsController.php
+
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Transfer;
 use Illuminate\Support\Facades\Auth;
-use Barryvdh\DomPDF\Facade\Pdf;   // <- PDF facade
+use Barryvdh\DomPDF\Facade\Pdf;   
 
 class TransactionsController extends Controller
 {
 public function index()
 {
     $items = Transfer::with(['service', 'beneficiary', 'refundRequest'])
-        ->where('user_id', auth()->id())
+        ->where('user_id', Auth::id())
         ->orderByDesc('created_at')
         ->paginate(15);
 
@@ -41,7 +41,7 @@ public function index()
     // Completed list PDF
     public function exportListPdf()
 {
-    $items = Transfer::with(['service','beneficiary'])    // +beneficiary
+    $items = Transfer::with(['service','beneficiary'])    
         ->where('user_id', Auth::id())
         ->where('status', 'completed')
         ->orderByDesc('id')

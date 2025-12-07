@@ -21,10 +21,10 @@ class AdminServiceController extends Controller
     {
         $data = $request->validate([
             'name'        => 'required|string|max:255',
-            'method'      => 'required|string|max:50',     // wallet, bank, cash…
+            'method'      => 'required|string|max:50',     
             'fee_percent' => 'required|numeric|min:0',
             'fixed_fee'   => 'required|numeric|min:0',
-            'speed'       => 'nullable|string|max:50',     // Instant, 1–3 days…
+            'speed'       => 'nullable|string|max:50',     
             'active'      => 'sometimes|boolean',
         ]);
 

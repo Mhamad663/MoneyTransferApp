@@ -12,36 +12,36 @@ class AgentDashboardController extends Controller
 {
     public function index()
     {
-        // Load agent data for dashboard (map, info, etc.)
+        // Load agent data for dashboard 
         $agent = Agent::where('user_id', Auth::id())->firstOrFail();
 
-        // 1. Pending Transfers
+        // Pending Transfers
         $pendingTransfers = Transfer::where('status', 'pending')
             ->with(['user', 'beneficiary'])
             ->get();
 
-        // 2. Completed Transfers
+        // Completed Transfers
         $completedTransfers = Transfer::where('status', 'completed')->get();
 
-        // 3. Cash-out requests
+        // Cash-out requests
         $cashOutRequests = Transfer::where('status', 'cashout_requested')->count();
 
-        // 4. Total revenue from fees
+        // Total revenue from fees
         $totalRevenue = Transfer::sum('fee');
 
-        // 5. Recent transactions
+        // Recent transactions
         $recentTransactions = Transfer::orderBy('created_at', 'desc')
             ->limit(5)
             ->with(['beneficiary'])
             ->get();
 
-        // 6. Notifications
+        // Notifications
         $notifications = TransferEvent::orderBy('created_at', 'desc')
             ->limit(5)
             ->get();
 
         return view('agent.dashboard', compact(
-            'agent',                 // <-- ADD THIS
+            'agent',                 
             'pendingTransfers',
             'completedTransfers',
             'cashOutRequests',

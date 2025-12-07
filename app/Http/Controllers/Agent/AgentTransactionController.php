@@ -14,8 +14,7 @@ class AgentTransactionController extends Controller
         $agent = Auth::user()->agent ?? null;
 
         $transactions = Transfer::with(['user', 'beneficiary'])
-            // if you have agent_id on transfers, uncomment this to restrict:
-            // ->where('agent_id', $agent->id)
+            
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 

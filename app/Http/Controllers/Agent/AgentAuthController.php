@@ -88,7 +88,7 @@ class AgentAuthController extends Controller
             'latitude'      => null,
             'longitude'     => null,
             'opening_hours' => null,
-            'is_active'     => 0,  // <- waiting admin approval
+            'is_active'     => 0, 
         ]);
 
         return redirect()

@@ -16,7 +16,7 @@ class PaymentMethod extends Model {
   'brand','last4','exp_month','exp_year','token',
   'bank_name','iban','account_number',
   'is_default','status',
-  'balance','currency',   // 👈 new
+  'balance','currency',  
 ];
 
 protected $casts = [

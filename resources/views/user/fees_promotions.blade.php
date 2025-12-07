@@ -3,7 +3,7 @@
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
 
-  {{-- ========== SERVICES SECTION ========== --}}
+  {{--  SERVICES SECTION  --}}
   <section class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm">
     <div class="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between flex-wrap gap-3">
       <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2">
@@ -84,7 +84,7 @@
     </div>
   </section>
 
-  {{-- ========== PROMOTIONS SECTION ========== --}}
+  {{--  PROMOTIONS SECTION  --}}
   <section class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm">
     <div class="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between flex-wrap gap-3">
       <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2">

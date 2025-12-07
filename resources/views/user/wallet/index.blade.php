@@ -1,10 +1,9 @@
-{{-- resources/views/user/wallet/index.blade.php --}}
 @extends('layouts.user')
 
 @section('content')
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
 
-  {{-- ✅ Flash Messages --}}
+  {{-- Flash Messages --}}
   @if(session('success'))
     <div class="rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-200 p-4 text-sm animate-fadeIn">
       {{ session('success') }}
@@ -16,7 +15,7 @@
     </div>
   @endif
 
-  {{-- 💰 WALLET HEADER --}}
+  {{--  WALLET HEADER --}}
   <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 p-8 text-white shadow-xl">
     <div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_left,_#93c5fd,_transparent_50%)]"></div>
 
@@ -54,7 +53,7 @@
     </div>
   </div>
 
-  {{-- ➕ Top-Up Form --}}
+  {{-- Top-Up Form --}}
   <div id="topup-form" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 md:p-8 shadow-sm hover:shadow-md transition">
     <h2 class="text-lg md:text-xl font-semibold text-slate-800 dark:text-slate-100 mb-4 flex items-center gap-2">
       💵 Add Funds
@@ -73,7 +72,7 @@
     </form>
   </div>
 
-  {{-- 🔁 Transfer Form --}}
+  {{-- Transfer Form --}}
   <div id="transfer-form" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 md:p-8 shadow-sm hover:shadow-md transition">
     <h2 class="text-lg md:text-xl font-semibold text-slate-800 dark:text-slate-100 mb-4 flex items-center gap-2">
       🔄 Wallet to Wallet Transfer
@@ -96,13 +95,13 @@
     </form>
   </div>
 
-  {{-- 🧾 Transactions --}}
+  {{--  Transactions --}}
   <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 md:p-8 shadow-sm">
     <h2 class="text-lg md:text-xl font-semibold text-slate-800 dark:text-slate-100 mb-4 flex items-center gap-2">
       📜 Recent Transactions
     </h2>
 
-    {{-- Desktop Table --}}
+    
     <div class="hidden md:block overflow-x-auto">
       <table class="min-w-full text-sm">
         <thead class="bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300">
@@ -162,7 +161,7 @@
   </div>
 </div>
 
-{{-- 💫 Animation --}}
+{{-- Animation --}}
 <script>
 function scrollToForm(id){ document.getElementById(id)?.scrollIntoView({ behavior:'smooth' }); }
 

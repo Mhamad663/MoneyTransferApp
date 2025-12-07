@@ -10,8 +10,8 @@ class AdminMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (! auth()->check() || auth()->user()->role !== 'admin') {
-            abort(403);   // or redirect()->route('admin.login');
+          if (!$request->user() || $request->user()->role !== 'admin') {
+            abort(403);
         }
 
         return $next($request);

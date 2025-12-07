@@ -1,6 +1,6 @@
 <?php
 
-// app/Http/Controllers/User/AgentMapController.php
+
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
@@ -17,7 +17,7 @@ class AgentMapController extends Controller
         return view('user.agents.map', compact('agents'));
     }
 
-    // Optional JSON endpoint if you later want lazy loading
+    
     public function json()
     {
         return Agent::where('is_active', true)->get();

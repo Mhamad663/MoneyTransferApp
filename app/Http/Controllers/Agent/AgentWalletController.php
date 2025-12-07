@@ -12,13 +12,13 @@ use App\Notifications\WalletFundedNotification;
 
 class AgentWalletController extends Controller
 {
-    // Step 1 – show search form
+    // show search form
     public function create()
     {
         return view('agent.wallet.topup');
     }
 
-    // Step 2 – lookup wallet and show user info
+    // lookup wallet and show user info
     public function lookup(Request $request)
     {
         $request->validate([
@@ -40,7 +40,7 @@ class AgentWalletController extends Controller
         ]);
     }
 
-    // Step 3 – add balance + create notification
+    // add balance + create notification
     public function store(Request $request)
     {
         $request->validate([
@@ -57,7 +57,7 @@ class AgentWalletController extends Controller
 
         // log transaction
         WalletTransaction::create([
-            'sender_id'   => null, // or Auth::id() if you want to track the agent as sender
+            'sender_id'   => null, 
             'receiver_id' => $wallet->user_id,
             'tx_type'     => 'agent_topup',
             'amount'      => $request->amount,

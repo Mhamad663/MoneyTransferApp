@@ -18,10 +18,10 @@ class DashboardController extends Controller
     public function index()
     {
         $user   = Auth::user();
-        $wallet = $user->wallet; // hasOne relation on User
-         $beneficiariesCount = Beneficiary::where('user_id', $user->id)->count(); // 👈 NEW
+        $wallet = $user->wallet; 
+         $beneficiariesCount = Beneficiary::where('user_id', $user->id)->count(); 
 
-        // ✅ Fetch & cache live exchange rates
+        
         $rates = Cache::remember('exchange_rates', now()->addMinutes(30), function() {
             $response = Http::get('https://api.exchangerate.host/latest', [
                 'base'    => 'EUR',
@@ -34,7 +34,7 @@ class DashboardController extends Controller
             return [];
         });
 
-        // ✅ Top cards
+        
         $balance          = $wallet?->balance ?? 0;
         $totalTransfers   = Transfer::where('user_id', $user->id)->count();
         $pendingTransfers = Transfer::where('user_id', $user->id)
@@ -42,14 +42,14 @@ class DashboardController extends Controller
                                     ->count();
         $avgRating        = round(Review::where('context','service')->avg('score') ?? 0, 2);
 
-        // ✅ Alerts (latest processing/failed)
+        
         $alerts = Transfer::where('user_id', $user->id)
                         ->whereIn('status', ['processing','failed'])
                         ->latest()
                         ->take(5)
                         ->get();
 
-        // ✅ Spend/Receive analytics (last 6 months)
+        
         $labels  = [];
         $spend   = [];
         $receive = [];
@@ -86,22 +86,22 @@ class DashboardController extends Controller
 
        
 
-        // ✅ Notifications
+        
         $unreadCount  = $user->unreadNotifications()->count();
         $latestNotifs = $user->notifications()->latest()->limit(6)->get();
 
-        // ✅ Recent transfers
+        
         $recent = Transfer::where('user_id', $user->id)
                         ->latest()
                         ->take(8)
                         ->get();
 
-        // ✅ User’s last rating
+            
         $myRating = Review::where('user_id', $user->id)
                         ->where('context', 'service')
                         ->first();
 
-        // ✅ Single return with all data
+            
        return view('user.dashboard', compact(
     'wallet',
     'balance',
@@ -126,29 +126,29 @@ class DashboardController extends Controller
 
     private function fetchRatesWithFallback(): array
 {
-    // cached for 30 min to be fast and avoid rate limits
+        
     return Cache::remember('exchange_rates_fallback', now()->addMinutes(30), function () {
-        // 1) ER-API (supports LBP)
+            
         try {
             $r = Http::timeout(10)->retry(2, 300)->withHeaders([
                 'User-Agent' => 'MasrefDashboard/1.0'
             ])->get('https://open.er-api.com/v6/latest/EUR');
 
             if ($r->ok() && isset($r['rates']['USD'])) {
-                $eurUsd = (float)$r['rates']['USD']; // 1 EUR in USD
-                $lbp = $r['rates']['LBP'] ?? null;   // 1 EUR in LBP (if present)
+                $eurUsd = (float)$r['rates']['USD'];    
+                $lbp = $r['rates']['LBP'] ?? null;      
                 return [
                     'provider' => 'er-api',
                     'eur_usd'  => $eurUsd,
-                    // we want USD→LBP; if EUR→LBP is present, convert:
+                    
                     'usd_lbp'  => $lbp ? (float)($lbp / $eurUsd) : null,
                 ];
             }
         } catch (\Throwable $e) {
-            // continue to next provider
+                
         }
 
-        // 2) exchangerate.host (usually supports LBP)
+            
         try {
             $r = Http::timeout(10)->retry(2, 300)->withHeaders([
                 'User-Agent' => 'MasrefDashboard/1.0'
@@ -167,10 +167,10 @@ class DashboardController extends Controller
                 ];
             }
         } catch (\Throwable $e) {
-            // continue
+            
         }
 
-        // 3) frankfurter.app (no LBP, but gives EUR→USD)
+            
         try {
             $r = Http::timeout(10)->retry(2, 300)->withHeaders([
                 'User-Agent' => 'MasrefDashboard/1.0'
@@ -183,14 +183,14 @@ class DashboardController extends Controller
                 return [
                     'provider' => 'frankfurter',
                     'eur_usd'  => (float)$r['rates']['USD'],
-                    'usd_lbp'  => null, // not supported here
+                    'usd_lbp'  => null, 
                 ];
             }
         } catch (\Throwable $e) {
-            // fall through
+                
         }
 
-        // if all failed:
+        
         return [
             'provider' => null,
             'eur_usd'  => null,

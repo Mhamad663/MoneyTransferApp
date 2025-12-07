@@ -230,7 +230,7 @@
   </section>
 </div>
 
-{{-- ===== DETAILS MODAL ===== --}}
+{{--  DETAILS MODAL  --}}
 <div id="detailsModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4">
   <div class="w-full max-w-3xl rounded-2xl bg-white p-6 shadow-xl dark:bg-slate-900">
     <div class="mb-4 flex items-center justify-between">
@@ -246,7 +246,7 @@
   </div>
 </div>
 
-{{-- ===== REMOVE MODAL ===== --}}
+{{--  REMOVE MODAL  --}}
 <div id="removeModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4">
   <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl dark:bg-slate-900">
     <h3 class="text-lg font-semibold">Remove payment method</h3>
@@ -264,7 +264,7 @@
   </div>
 </div>
 
-{{-- ===== JS ===== --}}
+{{--  JS  --}}
 <script>
 async function openDetails(id){
   const url = @json(route('user.payments.details','__ID__')).replace('__ID__', id);

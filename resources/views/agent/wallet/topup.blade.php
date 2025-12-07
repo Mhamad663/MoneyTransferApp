@@ -11,7 +11,7 @@
     </div>
   @endif
 
-  {{-- Step 1: search by wallet id --}}
+  {{-- search by wallet id --}}
   <div class="bg-white rounded-xl shadow p-5 mb-6">
     <form method="POST" action="{{ route('agent.wallet.lookup') }}" class="flex flex-col sm:flex-row gap-3 items-end">
       @csrf
@@ -33,7 +33,7 @@
   </div>
 
   @isset($wallet)
-    {{-- Step 2: show user info and topup form --}}
+    {{-- show user info and topup form --}}
     <div class="bg-white rounded-xl shadow p-6 space-y-4">
       <div class="flex justify-between items-center">
         <div>

@@ -26,8 +26,7 @@ class RefundController extends Controller
     {
         abort_unless($transfer->user_id === Auth::id(), 403);
 
-        // You can restrict to only completed/processing & within 30 days:
-        // abort_if($transfer->created_at->lt(now()->subDays(30)), 422, 'Request window expired.');
+       
 
         abort_if(RefundRequest::where('transfer_id',$transfer->id)->exists(),
             422, 'A request already exists for this transfer.');
@@ -64,8 +63,7 @@ class RefundController extends Controller
             'meta'        => strtoupper($req->kind) . ' — ' . ($req->reason ?? 'No reason'),
         ]);
 
-        // (Optional) notify the user and/or backoffice channel
-        // Auth::user()->notify(new \App\Notifications\RefundOpened($req));
+        
 
         return redirect()->route('user.refunds.index')
             ->with('success','Your request was submitted. We’ll review it shortly.');

@@ -30,7 +30,7 @@
       color: #64748b;
     }
 
-    /* ===== TABLE ===== */
+    /*  TABLE  */
     table {
       width: 100%;
       border-collapse: collapse;

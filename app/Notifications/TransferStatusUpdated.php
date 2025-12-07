@@ -5,6 +5,8 @@ namespace App\Notifications;
 use App\Models\Transfer;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
+use Illuminate\Http\Request;                     
+
 
 class TransferStatusUpdated extends Notification
 {
@@ -14,7 +16,7 @@ class TransferStatusUpdated extends Notification
 
     public function via($notifiable): array
     {
-        // Only database for now
+       
         return ['database'];
     }
 
@@ -42,7 +44,7 @@ class TransferStatusUpdated extends Notification
     $transfer->status = $request->status;
     $transfer->save();
 
-    // 👉 notify the owner of this transfer
+    // notify the owner of this transfer
     if ($transfer->user) {
         $transfer->user->notify(new TransferStatusUpdated($transfer));
     }

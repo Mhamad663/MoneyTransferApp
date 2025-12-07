@@ -1,4 +1,4 @@
-{{-- resources/views/admin/dashboard.blade.php --}}
+
   <x-admin-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">

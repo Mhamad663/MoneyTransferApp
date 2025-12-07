@@ -160,7 +160,7 @@
   </form>
 </div>
 
-{{-- CARD (simplified version: name, card number, amount, currency with auto rate) --}}
+{{-- CARD  --}}
 <div id="tab-card" class="tab-pane hidden">
   <form method="POST" action="{{ route('user.send.card') }}"
         class="bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-xl p-6 space-y-4 shadow-sm"
@@ -277,25 +277,25 @@ document.addEventListener('DOMContentLoaded', async function () {
   const rateResult = document.getElementById('rateResult');
   let rates = null;
 
-  // 🔹 Load live exchange rates from backend
+  // Load live exchange rates from backend
   async function loadRates() {
     try {
       const res = await fetch('{{ route("user.getRates") }}');
       const data = await res.json();
       if (data.success) {
-        rates = data.rates; // { EUR_USD: 1.1562, USD_LBP: 89499.88 }
+        rates = data.rates; 
       } else {
-        rateResult.textContent = '⚠️ Unable to fetch live rates.';
+        rateResult.textContent = ' Unable to fetch live rates.';
       }
     } catch (err) {
       console.error(err);
-      rateResult.textContent = '⚠️ Network error loading rates.';
+      rateResult.textContent = ' Network error loading rates.';
     }
   }
 
   await loadRates();
 
-  // 🔹 Perform conversion based on live rates
+  // Perform conversion based on live rates
   function updateConversion() {
     if (!rates) return;
     const amount = parseFloat(amountInput.value) || 0;
@@ -328,7 +328,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 
 
-{{-- ==== Styles ==== --}}
+{{--  Styles  --}}
 <style>
   .form-label {
     display:block;
@@ -384,7 +384,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   .tab-pane.hidden { display:none; }
 </style>
 
-{{-- ==== Script ==== --}}
+{{--  Script  --}}
 <script>
   // Tabs switcher
   document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -403,8 +403,8 @@ document.addEventListener('DOMContentLoaded', async function () {
   const amountInput = document.getElementById('bank_amount');
   const infoBox = document.getElementById('conversionInfo');
 
-  // Example static exchange rate (you can later make this dynamic via API)
-  const rates = { USD: 1, EUR: 0.92 }; // 1 USD = 0.92 EUR
+  
+  const rates = { USD: 1, EUR: 0.92 }; 
 
   function updateConversion() {
     const amount = parseFloat(amountInput.value);

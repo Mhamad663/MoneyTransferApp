@@ -15,7 +15,7 @@ class PaymentMethodController extends Controller
 {
     $userId = Auth::id();
 
-    // separate paginations
+    
     $cards = \App\Models\PaymentMethod::where('user_id',$userId)
         ->where('type','card')
         ->orderByDesc('is_default')
@@ -29,7 +29,7 @@ class PaymentMethodController extends Controller
     return view('user.payments.index', compact('cards','banks'));
 }
 
-// app/Http/Controllers/User/PaymentMethodController.php
+
 public function details(\App\Models\PaymentMethod $paymentMethod)
 {
     abort_unless($paymentMethod->user_id === Auth::id(), 403);
@@ -41,8 +41,7 @@ public function details(\App\Models\PaymentMethod $paymentMethod)
             'last4'       => $paymentMethod->last4,
             'exp_month'   => $paymentMethod->exp_month,
             'exp_year'    => $paymentMethod->exp_year,
-            // IMPORTANT: one of these must actually exist in your table
-            // e.g. `pan` (encrypted), `full_number`, etc.
+            
             'full_number' => $paymentMethod->pan ?? $paymentMethod->full_number ?? null,
         ]);
     }
@@ -53,7 +52,7 @@ public function details(\App\Models\PaymentMethod $paymentMethod)
         'bank_name'    => $paymentMethod->bank_name,
         'iban'         => $paymentMethod->iban,
         'account'      => $paymentMethod->account_number,
-        // IMPORTANT: whichever column you really store
+        
         'full_iban'    => $paymentMethod->full_iban ?? $paymentMethod->iban ?? null,
         'full_account' => $paymentMethod->full_account ?? $paymentMethod->account_number ?? null,
     ]);
@@ -66,7 +65,7 @@ public function details(\App\Models\PaymentMethod $paymentMethod)
         return view('user.payments.create');
     }
 
-    /** Store CARD (tokenize in real production) */
+    /* Store CARD (tokenize in real production) */
     public function storeCard(Request $r)
     {
         $r->validate([
@@ -77,13 +76,12 @@ public function details(\App\Models\PaymentMethod $paymentMethod)
             'cvv'         => 'required|string|min:3|max:4',
         ]);
 
-        // Luhn validation
+        
         if (! $this->luhnCheck($r->number)) {
             return back()->withErrors(['number' => 'Invalid card number'])->withInput();
         }
 
-        // ————— Replace this block with Stripe/Paystack tokenization —————
-        // Example for Stripe:
+       
         // \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
         // $tokenObj = \Stripe\Token::create([
         //     'card' => [
@@ -95,8 +93,8 @@ public function details(\App\Models\PaymentMethod $paymentMethod)
         //     ],
         // ]);
         // $token = $tokenObj->id;
-        $token = 'tok_local_'.uniqid(); // placeholder
-        // ————————————————————————————————————————————————————————————————
+        $token = 'tok_local_'.uniqid(); 
+        
 
         $last4 = substr(preg_replace('/\D/','',$r->number), -4);
         $brand = $this->detectBrand($r->number);
@@ -110,14 +108,14 @@ public function details(\App\Models\PaymentMethod $paymentMethod)
             'last4'     => $last4,
             'exp_month' => $r->exp_month,
             'exp_year'  => $r->exp_year,
-            'token'     => $token,          // store token ONLY
+            'token'     => $token,          
             'is_default'=> $firstCard,
         ]);
 
         return redirect()->route('user.payments.index')->with('success','Card added.');
     }
 
-    /** Store BANK (mask account/IBAN) */
+    /* Store BANK (mask account/IBAN) */
     public function storeBank(Request $r)
     {
         $r->validate([
@@ -171,7 +169,7 @@ public function details(\App\Models\PaymentMethod $paymentMethod)
         return back()->with('success','Payment method removed.');
     }
 
-    // ---------- Helpers ----------
+        
 
     private function luhnCheck($number): bool
     {

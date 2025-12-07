@@ -8,22 +8,20 @@ use Illuminate\Http\Request;
 
 class AdminAgentController extends Controller
 {
-    /**
-     * List all agents / partner stores.
-     */
+    
     public function index()
     {
-        // Load related user (for email) and paginate results
+        // Load related user 
         $agents = Agent::with('user')
             ->orderBy('created_at', 'desc')
-            ->paginate(10);   // 👈 instead of ->get()
+            ->paginate(10);   
     
         return view('admin.agents.index', compact('agents'));
     }
     
 
-    /**
-     * Approve an agent (activate).
+    /*
+      Approve an agent (activate).
      */
     public function approve(Agent $agent)
     {
@@ -35,8 +33,8 @@ class AdminAgentController extends Controller
             ->with('success', 'Agent approved successfully.');
     }
 
-    /**
-     * Suspend / deactivate an agent.
+    /*
+     Suspend / deactivate an agent.
      */
     public function suspend(Agent $agent)
     {

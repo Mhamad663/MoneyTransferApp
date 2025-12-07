@@ -20,20 +20,20 @@ class StripeController extends Controller
 
     return view('user.payments.index', compact('cards','banks'));
 }
-    /** Show the Stripe Elements form to add a card */
+    /*Show the Stripe Elements form to add a card */
     public function showAddCard()
     {
-        // Publishable key for the client
+        
         $pk = config('services.stripe.key');
         return view('user.payments.add_card_stripe', compact('pk'));
     }
 
-    /** Create a SetupIntent for the logged-in user */
+    /*Create a SetupIntent for the logged-in user */
     public function createSetupIntent()
     {
         \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
 
-        $user = User::find(Auth::id());   // always an Eloquent model
+        $user = User::find(Auth::id());   
 
 if (blank($user->stripe_customer_id)) {
     $customer = \Stripe\Customer::create([
@@ -47,13 +47,13 @@ if (blank($user->stripe_customer_id)) {
 
         $intent = \Stripe\SetupIntent::create([
             'customer' => $user->stripe_customer_id,
-            // 'payment_method_types' => ['card'], // optional, defaults include 'card'
+            // 'payment_method_types' => ['card'], 
         ]);
 
         return response()->json(['client_secret' => $intent->client_secret]);
     }
 
-    /** Attach the PaymentMethod to the customer and store the basic details */
+    /**Attach the PaymentMethod to the customer and store the basic details */
     public function storePaymentMethod(Request $r)
 {
     $r->validate(['payment_method' => 'required|string']);
@@ -67,7 +67,7 @@ if (blank($user->stripe_customer_id)) {
 
     $spm = \Stripe\PaymentMethod::retrieve($r->payment_method);
 
-    // SAVE to DB (this is what the page lists)
+    // SAVE to DB 
     PM::create([
         'user_id'   => $user->id,
         'type'      => 'card',
@@ -75,7 +75,7 @@ if (blank($user->stripe_customer_id)) {
         'last4'     => $spm->card->last4,
         'exp_month' => $spm->card->exp_month,
         'exp_year'  => $spm->card->exp_year,
-        'token'     => $spm->id,                 // Stripe PM id
+        'token'     => $spm->id,                 
         'is_default'=> ! PM::where('user_id',$user->id)->where('type','card')->exists(),
     ]);
 

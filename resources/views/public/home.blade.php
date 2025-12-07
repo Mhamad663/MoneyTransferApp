@@ -1,4 +1,4 @@
-{{-- resources/views/public/home.blade.php --}}
+
 @extends('public.layout')
 
 @section('content')

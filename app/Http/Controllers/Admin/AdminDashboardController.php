@@ -23,23 +23,23 @@ use App\Models\Transfer;class AdminDashboardController extends Controller
             'open_tickets'    => 0,
         ];
 
-        // ---- Chart data: last 7 days ----
+        // Chart data
         $startDate = now()->subDays(6)->startOfDay();
 
         $raw = Transfer::selectRaw('DATE(created_at) as d, COUNT(*) as total')
             ->where('created_at', '>=', $startDate)
             ->groupBy('d')
             ->orderBy('d')
-            ->pluck('total', 'd');   // ['2025-12-01' => 3, ...]
+            ->pluck('total', 'd');   
 
         $labels = [];
         $data   = [];
 
         for ($i = 0; $i < 7; $i++) {
             $day = $startDate->copy()->addDays($i);
-            $key = $day->toDateString();          // 2025-12-01
+            $key = $day->toDateString();          
 
-            $labels[] = $day->format('d M');      // 01 Dec
+            $labels[] = $day->format('d M');     
             $data[]   = $raw[$key] ?? 0;
         }
 

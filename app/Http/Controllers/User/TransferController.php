@@ -15,7 +15,7 @@ use App\Notifications\TransferStatusUpdated;
 
 class TransferController extends Controller
 {
-    /** Show Send form */
+    /*Show Send form */
     public function create(Request $r)
     {
         $beneficiaries = Beneficiary::where('user_id', Auth::id())
@@ -45,7 +45,7 @@ class TransferController extends Controller
         ));
     }
 
-    /** WALLET → WALLET */
+    /* WALLET → WALLET */
     public function storeWallet(Request $r)
     {
         $this->attachServiceId($r, 'wallet');
@@ -69,34 +69,34 @@ class TransferController extends Controller
                 ->first();
 
             if (!$b) {
-                return back()->with('error', '❌ Invalid beneficiary selected.');
+                return back()->with('error', ' Invalid beneficiary selected.');
             }
             $receiverWalletId = $b->platform_wallet_id;
         }
 
         if (!$receiverWalletId) {
-            return back()->with('error', '⚠️ Receiver wallet ID required.');
+            return back()->with('error', 'Receiver wallet ID required.');
         }
 
         $receiverWallet = Wallet::where('wallet_id', $receiverWalletId)->first();
         if (!$receiverWallet) {
-            return back()->with('error', '❌ Receiver wallet not found.');
+            return back()->with('error', ' Receiver wallet not found.');
         }
 
         if ($receiverWallet->id === $senderWallet->id) {
-            return back()->with('error', '⚠️ You cannot send money to your own wallet.');
+            return back()->with('error', ' You cannot send money to your own wallet.');
         }
 
         $service = TransferService::find($r->service_id);
         if (!$service) {
-            return back()->with('error', '⚠️ Transfer service not found.');
+            return back()->with('error', ' Transfer service not found.');
         }
 
         $fee   = $service->calculateFee($data['amount']);
         $total = $data['amount'] + $fee;
 
         if ($senderWallet->balance < $total) {
-            return back()->with('error', '❌ Insufficient wallet balance.');
+            return back()->with('error', ' Insufficient wallet balance.');
         }
 
         $ref = (string) Str::uuid();
@@ -134,20 +134,20 @@ class TransferController extends Controller
             ));
         }
 
-        return redirect()->route('user.send')->with('success', '✅ Transfer submitted successfully and awaiting approval.');
+        return redirect()->route('user.send')->with('success', 'Transfer submitted successfully and awaiting approval.');
     }
 
-    /** ADMIN: Approve a pending transfer */
+    /*ADMIN: Approve a pending transfer */
     public function approveTransfer($id)
 {
     $transfer = Transfer::find($id);
 
     if (!$transfer) {
-        return back()->with('error', '⚠️ Transfer not found.');
+        return back()->with('error', 'Transfer not found.');
     }
 
     if ($transfer->status !== 'processing') {
-        return back()->with('error', '⚠️ Only pending transfers can be approved.');
+        return back()->with('error', ' Only pending transfers can be approved.');
     }
 
     DB::transaction(function () use ($transfer) {
@@ -163,7 +163,7 @@ class TransferController extends Controller
         $receiverWallet->increment('balance', $transfer->amount_dst);
 
 
-        // Update transfer status
+        
         $transfer->update(['status' => 'completed']);
 
         TransferEvent::create([
@@ -183,7 +183,7 @@ class TransferController extends Controller
 }
 
 
-    /** CARD */
+    /* CARD */
     public function storeCard(Request $r)
     {
         $this->attachServiceId($r, 'card');
@@ -208,7 +208,7 @@ class TransferController extends Controller
 
         $receiverName = $b->name ?? $data['receiver_name'];
         if (!$receiverName) {
-            return back()->with('error', '⚠️ Receiver name is required.');
+            return back()->with('error', ' Receiver name is required.');
         }
 
         $card = PaymentMethod::where('user_id', Auth::id())
@@ -217,23 +217,23 @@ class TransferController extends Controller
             ->first();
 
         if (!$card) {
-            return back()->with('error', '⚠️ Default card not found.');
+            return back()->with('error', ' Default card not found.');
         }
 
         $service = TransferService::find($r->service_id);
         if (!$service) {
-            return back()->with('error', '⚠️ Transfer service not found.');
+            return back()->with('error', ' Transfer service not found.');
         }
 
         $fee   = $service->calculateFee($data['amount']);
         $total = $data['amount'] + $fee;
 
         if (strtoupper($card->currency) !== strtoupper($data['currency'])) {
-            return back()->with('error', '⚠️ Currency mismatch for card.');
+            return back()->with('error', ' Currency mismatch for card.');
         }
 
         if ($card->balance < $total) {
-            return back()->with('error', '❌ Insufficient balance in your card.');
+            return back()->with('error', ' Insufficient balance in your card.');
         }
 
         $ref = (string) Str::uuid();
@@ -266,7 +266,7 @@ class TransferController extends Controller
         return redirect()->route('user.send')->with('success', '✅ Card transfer submitted. Awaiting agent approval.');
     }
 
-    /** BANK */
+    /* BANK */
     public function storeBank(Request $r)
     {
         $this->attachServiceId($r, 'bank');
@@ -295,7 +295,7 @@ class TransferController extends Controller
         $iban         = $b->iban ?? $data['iban'];
 
         if (!$receiverName || !$iban) {
-            return back()->with('error', '⚠️ Receiver name and IBAN are required.');
+            return back()->with('error', 'Receiver name and IBAN are required.');
         }
 
         $bank = PaymentMethod::where('user_id', Auth::id())
@@ -304,23 +304,23 @@ class TransferController extends Controller
             ->first();
 
         if (!$bank) {
-            return back()->with('error', '⚠️ Default bank account not found.');
+            return back()->with('error', ' Default bank account not found.');
         }
 
         $service = TransferService::find($data['service_id']);
         if (!$service) {
-            return back()->with('error', '⚠️ Transfer service not found.');
+            return back()->with('error', ' Transfer service not found.');
         }
 
         $fee   = $service->calculateFee($data['amount']);
         $total = $data['amount'] + $fee;
 
         if (strtoupper($bank->currency) !== strtoupper($data['src_currency'])) {
-            return back()->with('error', '⚠️ Currency mismatch for bank account.');
+            return back()->with('error', ' Currency mismatch for bank account.');
         }
 
         if ($bank->balance < $total) {
-            return back()->with('error', '❌ Insufficient bank balance.');
+            return back()->with('error', ' Insufficient bank balance.');
         }
 
         $ref = (string) Str::uuid();
@@ -353,18 +353,18 @@ class TransferController extends Controller
         return redirect()->route('user.send')->with('success', '✅ Bank transfer submitted. Awaiting approval.');
     }
 
-    /** Show transfer details */
+    /* Show transfer details */
     public function show(Transfer $transfer)
     {
         if ((int)$transfer->user_id !== (int)Auth::id()) {
-            return back()->with('error', '⚠️ Unauthorized access to this transfer.');
+            return back()->with('error', ' Unauthorized access to this transfer.');
         }
 
         $events = $transfer->events()->orderBy('id')->get();
         return view('user.transfers.show', compact('transfer', 'events'));
     }
 
-    /** Attach service ID helper */
+    /* Attach service ID helper */
     private function attachServiceId(Request $r, string $method): void
     {
         if ($r->filled('service_id')) return;

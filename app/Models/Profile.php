@@ -27,7 +27,7 @@ class Profile extends Model
     'verification_status',
 ];
 
-    // Relationship
+    
     public function user()
     {
         return $this->belongsTo(User::class);

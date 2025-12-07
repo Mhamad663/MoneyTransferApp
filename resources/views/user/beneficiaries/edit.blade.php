@@ -20,7 +20,7 @@
 {{-- ===== PAGE TITLE ===== --}}
 
 
-{{-- ===== ERROR ALERT ===== --}}
+{{--ERROR ALERT ]--}}
 @if($errors->any())
   <div class="mb-4 rounded-lg bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300 p-3 border border-red-200 dark:border-red-800">
     <ul class="list-disc ml-5 space-y-1">
@@ -29,7 +29,7 @@
   </div>
 @endif
 
-{{-- ===== EDIT FORM ===== --}}
+{{--  EDIT FORM --}}
 <form method="POST" action="{{ route('user.beneficiaries.update',$b) }}" 
       class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-md space-y-6 transition">
   @csrf @method('PATCH')
@@ -111,7 +111,7 @@
   </div>
 </form>
 
-{{-- ===== STYLES ===== --}}
+{{--  STYLES  --}}
 <style>
   .form-label {display:block;font-size:.9rem;color:#475569;margin-bottom:.25rem}
   .dark .form-label {color:#cbd5e1}
@@ -134,7 +134,7 @@
   @media(max-width:640px){form{padding:1.25rem}.form-label{font-size:.85rem}}
 </style>
 
-{{-- ===== JS ===== --}}
+{{--  JS  --}}
 <script>
   const method = document.getElementById('payout_method');
   const bank = document.getElementById('bank_fields');

@@ -30,7 +30,7 @@ class Agent extends Model
         'longitude'     => 'float',
     ];
 
-    // 👇 NEW: link agent → user
+    
     public function user()
     {
         return $this->belongsTo(User::class);

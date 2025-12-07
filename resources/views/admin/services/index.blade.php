@@ -1,4 +1,3 @@
-{{-- resources/views/admin/services/index.blade.php --}}
 <x-admin-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
@@ -38,63 +37,74 @@
                                 <th class="px-4 py-2 text-right">Actions</th>
                             </tr>
                         </thead>
+
                         <tbody>
                         @forelse($services as $service)
-                            <tr class="border-b border-slate-800/80 hover:bg-slate-800/60">
+                            <tr class="border-b border-slate-800/80 hover:bg-slate-800/40">
+
                                 <td class="px-4 py-2 text-[11px] text-indigo-300">
                                     {{ $service->code }}
                                 </td>
-                                <td class="px-4 py-2 text-[11px]">
-                                    <form method="POST"
-                                          action="{{ route('admin.services.update', $service) }}"
-                                          class="flex gap-2 items-center">
-                                        @csrf
-                                        @method('PUT')
 
+                                <form method="POST" action="{{ route('admin.services.update', $service) }}">
+                                    @csrf
+                                    @method('PUT')
+
+                                    <td class="px-4 py-2">
                                         <input type="text" name="name"
                                                value="{{ $service->name }}"
-                                               class="bg-slate-800 border border-slate-700 rounded-md px-2 py-1 text-xs w-40">
+                                               class="w-40 bg-slate-800 border border-slate-700 rounded-md px-2 py-1 text-xs">
+                                    </td>
 
+                                    <td class="px-4 py-2">
                                         <input type="text" name="method"
                                                value="{{ $service->method }}"
-                                               class="bg-slate-800 border border-slate-700 rounded-md px-2 py-1 text-xs w-24">
+                                               class="w-24 bg-slate-800 border border-slate-700 rounded-md px-2 py-1 text-xs">
+                                    </td>
 
+                                    <td class="px-4 py-2">
                                         <input type="number" step="0.01" name="fee_percent"
                                                value="{{ $service->fee_percent }}"
-                                               class="bg-slate-800 border border-slate-700 rounded-md px-2 py-1 text-xs w-20">
+                                               class="w-20 bg-slate-800 border border-slate-700 rounded-md px-2 py-1 text-xs">
+                                    </td>
 
+                                    <td class="px-4 py-2">
                                         <input type="number" step="0.01" name="fixed_fee"
                                                value="{{ $service->fixed_fee }}"
-                                               class="bg-slate-800 border border-slate-700 rounded-md px-2 py-1 text-xs w-24">
+                                               class="w-24 bg-slate-800 border border-slate-700 rounded-md px-2 py-1 text-xs">
+                                    </td>
 
+                                    <td class="px-4 py-2">
                                         <input type="text" name="speed"
                                                value="{{ $service->speed }}"
-                                               class="bg-slate-800 border border-slate-700 rounded-md px-2 py-1 text-xs w-24">
+                                               class="w-24 bg-slate-800 border border-slate-700 rounded-md px-2 py-1 text-xs">
+                                    </td>
 
-                                        <label class="inline-flex items-center text-[11px] text-gray-300 ml-2">
+                                    <td class="px-4 py-2">
+                                        <label class="inline-flex items-center text-[11px] text-gray-300">
                                             <input type="checkbox" name="active" value="1"
                                                    class="rounded border-slate-600 bg-slate-800 text-indigo-500"
                                                    {{ $service->active ? 'checked' : '' }}>
                                             <span class="ml-1">Active</span>
                                         </label>
+                                    </td>
 
-                                        <button class="ml-auto px-3 py-1 rounded-full bg-indigo-600 text-white text-[11px]">
+                                    <td class="px-4 py-2 text-right flex items-center justify-end gap-3">
+                                        <button class="px-3 py-1 rounded-full bg-indigo-600 text-white text-[11px]">
                                             Save
                                         </button>
-                                    </form>
-                                </td>
-                                <td colspan="6" class="hidden"></td>
-                                <td class="px-4 py-2 text-right">
-                                    <form method="POST"
-                                          action="{{ route('admin.services.destroy', $service) }}"
-                                          onsubmit="return confirm('Delete this service?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="text-[11px] text-rose-400 hover:text-rose-300">
-                                            Delete
-                                        </button>
-                                    </form>
-                                </td>
+                                </form>
+
+                                        <form method="POST"
+                                              action="{{ route('admin.services.destroy', $service) }}"
+                                              onsubmit="return confirm('Delete this service?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="text-[11px] text-rose-400 hover:text-rose-300">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </td>
                             </tr>
                         @empty
                             <tr>
@@ -115,31 +125,31 @@
                 </h3>
 
                 <form method="POST" action="{{ route('admin.services.store') }}"
-                      class="flex flex-wrap gap-3 text-xs">
+                      class="flex flex-wrap items-center gap-3 text-xs">
                     @csrf
 
                     <input type="text" name="name" placeholder="Service name"
-                           class="bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-xs w-48" required>
+                           class="w-48 bg-slate-800 border border-slate-700 rounded-md px-3 py-2" required>
 
                     <input type="text" name="method" placeholder="Method (wallet, bank…)"
-                           class="bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-xs w-40" required>
+                           class="w-40 bg-slate-800 border border-slate-700 rounded-md px-3 py-2" required>
 
                     <input type="number" step="0.01" name="fee_percent" placeholder="Fee %"
-                           class="bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-xs w-28" required>
+                           class="w-28 bg-slate-800 border border-slate-700 rounded-md px-3 py-2" required>
 
                     <input type="number" step="0.01" name="fixed_fee" placeholder="Fixed fee"
-                           class="bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-xs w-28" required>
+                           class="w-28 bg-slate-800 border border-slate-700 rounded-md px-3 py-2" required>
 
                     <input type="text" name="speed" placeholder="Speed (Instant, 1–3 days)"
-                           class="bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-xs w-40">
+                           class="w-40 bg-slate-800 border border-slate-700 rounded-md px-3 py-2">
 
-                    <label class="inline-flex items-center text-[11px] text-gray-300">
+                    <label class="inline-flex items-center text-gray-300">
                         <input type="checkbox" name="active" value="1"
                                class="rounded border-slate-600 bg-slate-800 text-indigo-500" checked>
                         <span class="ml-1">Active</span>
                     </label>
 
-                    <button class="ml-auto px-4 py-2 rounded-full bg-indigo-600 text-white text-xs">
+                    <button class="ml-auto px-4 py-2 rounded-full bg-indigo-600 text-white">
                         Create service
                     </button>
                 </form>

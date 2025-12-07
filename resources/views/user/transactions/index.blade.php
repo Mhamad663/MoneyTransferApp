@@ -1,4 +1,4 @@
-{{-- resources/views/user/transactions/index.blade.php --}}
+
 @extends('layouts.user')
 
 @section('content')
@@ -7,7 +7,7 @@
  {{--   <h1 class="text-xl font-semibold text-slate-800 dark:text-slate-100">Transactions</h1>--}}
 
   <div class="flex items-center gap-2">
-    {{-- View refunds (list all refund/dispute requests) --}}
+    {{-- View refunds  --}}
     <a href="{{ route('user.refunds.index') }}"
        class="inline-flex items-center gap-2 rounded-lg border border-slate-300 dark:border-slate-700
               px-3 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800">
@@ -31,7 +31,7 @@
   </div>
 </div>
 
-{{-- Desktop table --}}
+
 <div class="hidden md:block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl">
   <div class="overflow-x-auto">
     <table class="w-full text-sm">
@@ -81,7 +81,7 @@
 
     @if($refund)
         @php
-            $status = $refund->status; // open, in_review, resolved, ...
+            $status = $refund->status; 
 
             $badgeClasses = match ($status) {
                 'resolved'      => 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300',

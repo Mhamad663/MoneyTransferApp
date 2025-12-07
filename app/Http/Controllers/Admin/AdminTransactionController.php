@@ -16,7 +16,7 @@ class AdminTransactionController extends Controller
 
         $query = Transfer::with(['user', 'beneficiary']);
 
-        // Filter: scope=today (when you click the dashboard card)
+        // Filter: scope=today 
         if ($scope === 'today') {
             $query->whereDate('created_at', today());
         }

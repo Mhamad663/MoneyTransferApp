@@ -4,7 +4,11 @@ namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
-
+use Illuminate\Http\Request;                     
+use App\Models\Wallet;                           
+use App\Models\WalletTransaction;                
+use Illuminate\Support\Str;                     
+use Illuminate\Support\Facades\Auth;  
 class WalletFundedNotification extends Notification
 {
     use Queueable;
@@ -22,7 +26,7 @@ class WalletFundedNotification extends Notification
 
     public function via($notifiable)
     {
-        return ['database']; // goes to notifications table
+        return ['database']; 
     }
 
     public function toArray($notifiable)
@@ -61,12 +65,12 @@ class WalletFundedNotification extends Notification
         'status'      => 'completed',
     ]);
 
-    // 👉 send notification to that user
+    // send notification to that user
     $wallet->user->notify(
         new WalletFundedNotification(
             $request->amount,
             $wallet->wallet_id,
-            Auth::user()       // the agent
+            Auth::user()       
         )
     );
 

@@ -11,7 +11,7 @@ class AdminReportController extends Controller
 {
     public function index(Request $request)
     {
-        // Date range filters (default: last 30 days)
+        // Date range filters 
         $from = $request->input('from_date', now()->subDays(30)->toDateString());
         $to   = $request->input('to_date', now()->toDateString());
 

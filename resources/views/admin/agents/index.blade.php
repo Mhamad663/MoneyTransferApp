@@ -25,7 +25,7 @@
                 </div>
             @endif
 
-            {{-- Filters / summary row (simple for now) --}}
+            {{-- Filters / summary row  --}}
             <div class="flex flex-wrap items-center justify-between gap-3">
                 <div>
                     <h3 class="text-sm font-semibold text-gray-100">
@@ -138,7 +138,7 @@
                 </table>
             </div>
 
-            {{-- Pagination --}}
+            
             <div class="flex justify-end">
                 {{ $agents->links() }}
             </div>

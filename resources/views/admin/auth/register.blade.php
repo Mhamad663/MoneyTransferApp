@@ -1,4 +1,4 @@
-{{-- resources/views/admin/auth/register.blade.php --}}
+
 @extends('layouts.admin-auth')
 
 @section('content')
